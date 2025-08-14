@@ -1,0 +1,78 @@
+#leetscribe-annotate-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  background-color: #222222;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+#leetscribe-annotate-btn:hover:not(:disabled) {
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+#leetscribe-annotate-btn:active:not(:disabled) {
+  background-color: #e5e7eb;
+  transform: translateY(1px);
+}
+
+#leetscribe-annotate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Success state */
+#leetscribe-annotate-btn.success {
+  color: #10b981;
+  border-color: #10b981;
+}
+
+#leetscribe-annotate-btn.success:hover {
+  background-color: #f0fdf4;
+}
+
+/* Error state */
+#leetscribe-annotate-btn.error {
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+#leetscribe-annotate-btn.error:hover {
+  background-color: #fef2f2;
+}
+
+/* Spinner */
+.leetscribe-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  animation: leetscribe-spin 1s linear infinite;
+}
+
+@keyframes leetscribe-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  #leetscribe-annotate-btn {
+    color: #d1d5db;
+    border-color: #4b5563;
+  }
+  #leetscribe-annotate-btn:hover:not(:disabled) {
+    background-color: #374151;
+    border-color: #6b7280;
+  }
+}

@@ -1,4 +1,4 @@
-const API_KEY = REMOVED; // store securely in extension storage if possible
+const API_KEY = "HIDDEN"; // store securely in extension storage if possible
 
 function createAnnotationPrompt(title, code, lang) {
   return `You are an expert competitive programming tutor.  
@@ -36,7 +36,11 @@ async function getProblemTitleFromPage(tabId) {
     world: "MAIN",
     func: () => {
       // Adjust selector if LeetCode changes DOM
-      const el = document.querySelector('div.text-title-large');
+      const el =
+        document.querySelector("div.text-title-large") ||
+        document.querySelector('[data-cy="question-title"]') ||
+        document.querySelector("h1") ||
+        document.querySelector(".css-v3d350");
       return el?.innerText?.trim() ?? null;
     },
   });
@@ -104,33 +108,56 @@ async function annotateWithLLM(title, code, lang) {
       temperature: 0.2,
     }),
   });
+
+  if (!res.ok) {
+    throw new Error(`API request failed: ${res.status} ${res.statusText}`);
+  }
+
   const data = await res.json();
   const text = data?.choices?.[0]?.message?.content ?? "";
   const m = text.match(/```[\s\S]*?\n([\s\S]*?)```/);
   return m ? m[1].trim() : text.trim();
 }
 
-chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === "ANNOTATE_ACTIVE_TAB") {
     (async () => {
-      const [info, title] = await Promise.all([
-        getCodeFromPage(msg.tabId),
-        getProblemTitleFromPage(msg.tabId),
-      ]);
+      try {
+        // Use the provided tabId or get the current active tab
+        let tabId = msg.tabId;
+        if (!tabId) {
+          const [tab] = await chrome.tabs.query({
+            active: true,
+            currentWindow: true,
+          });
+          tabId = tab.id;
+        }
 
-      if (!info?.code) {
-        sendResponse({ ok: false, error: "Monaco not ready" });
-        return;
-      }
-      if (!title) {
-        sendResponse({ ok: false, error: "Problem title not found" });
-        return;
-      }
+        const [info, title] = await Promise.all([
+          getCodeFromPage(tabId),
+          getProblemTitleFromPage(tabId),
+        ]);
 
-      const annotated = await annotateWithLLM(title, info.code, info.lang);
-      await setCodeInPage(msg.tabId, annotated);
-      sendResponse({ ok: true });
+        if (!info?.code) {
+          sendResponse({
+            ok: false,
+            error: "Monaco editor not ready or no code found",
+          });
+          return;
+        }
+        if (!title) {
+          sendResponse({ ok: false, error: "Problem title not found" });
+          return;
+        }
+
+        const annotated = await annotateWithLLM(title, info.code, info.lang);
+        await setCodeInPage(tabId, annotated);
+        sendResponse({ ok: true });
+      } catch (error) {
+        console.error("LeetScribe annotation error:", error);
+        sendResponse({ ok: false, error: error.message });
+      }
     })();
-    return true;
+    return true; // Will respond asynchronously
   }
 });
