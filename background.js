@@ -1,5 +1,3 @@
-const API_KEY = "HIDDEN"; // store securely in extension storage if possible
-
 function createAnnotationPrompt(title, code, lang) {
   return `You are an expert competitive programming tutor.  
         You will be given a problem **title**, a problem statement, and a candidate solution.  
@@ -14,6 +12,7 @@ function createAnnotationPrompt(title, code, lang) {
           - Also add inline comments to solution for explaining key steps.
           - Keep the original code completely unchanged.
         3. If the solution is incorrect:
+          -Return the original code unchanged.
           - Do NOT modify the code in any way.
           - At the very top, add only a single comment:
             // ❌ The provided solution is incorrect for this problem.
@@ -94,16 +93,28 @@ async function setCodeInPage(tabId, newCode) {
 }
 
 async function annotateWithLLM(title, code, lang) {
+  // Get API settings from sync storage
+  const { apiUrl, modelName, apiKey } = await new Promise((resolve) => {
+    chrome.storage.sync.get(["apiUrl", "modelName", "apiKey"], resolve);
+  });
+
+  if (!apiUrl || !modelName || !apiKey) {
+    throw new Error(
+      "API settings are missing. Please configure them in extension options."
+    );
+  }
+
   const prompt = createAnnotationPrompt(title, code, lang);
   console.log("LLM Prompt:\n", prompt);
-  const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+
+  const res = await fetch(apiUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${API_KEY}`,
+      Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: "llama-3.3-70b-versatile",
+      model: modelName,
       messages: [{ role: "user", content: prompt }],
       temperature: 0.2,
     }),
