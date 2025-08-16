@@ -1,6 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>LeetScribe</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
   <body>
+    <div class="container">
+      <header>
+        <h1>LeetScribe</h1>
+        <p class="subtitle">Annotation helper for LeetCode</p>
+      </header>
+
+      <section class="status-card" aria-live="polite">
+        <div class="status-row">
+          <span class="label">API URL</span>
+          <span id="apiUrl" class="value muted">—</span>
+        </div>
+        <div class="status-row">
+          <span class="label">Model</span>
+          <span id="model" class="value muted">—</span>
+        </div>
+        <div class="status-row">
+          <span class="label">API Key</span>
+          <span id="apiKey" class="value muted">—</span>
+        </div>
+
+        <div id="overall" class="overall muted">Loading…</div>
+      </section>
+
+      <div class="actions">
+        <button id="openOptions">Open Settings</button>
+      </div>
+
+      <footer>
+        <small class="note">
+          Settings are stored in <strong>chrome.storage.sync</strong>.</small
+        >
+      </footer>
+    </div>
+
     <script src="popup.js"></script>
   </body>
 </html>
