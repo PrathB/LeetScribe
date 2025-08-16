@@ -1,49 +1,57 @@
-/* Base styles for both themes */
+:root {
+  font-size: 16px;
+}
+
 body {
   font-family: Arial, sans-serif;
-  max-width: 500px;
-  margin: 40px auto;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 31.25rem;
+  margin: 2.5rem auto;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
   transition: background-color 0.3s, color 0.3s;
 }
 
 h2 {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
   font-size: 1.5rem;
+}
+
+h3 {
+  text-align: center;
+  margin: 1.5rem 0;
+  font-size: 1rem;
 }
 
 label {
   display: block;
-  margin-top: 16px;
+  margin-top: 1rem;
   font-weight: 600;
   font-size: 0.95rem;
 }
 
 input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 6px;
+  width: 90%;
+  padding: 0.625rem;
+  margin-top: 0.375rem;
   border: 1px solid;
-  border-radius: 6px;
+  border-radius: 0.375rem;
   font-size: 0.95rem;
   transition: border-color 0.2s, background-color 0.2s, color 0.2s;
 }
 
 input:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(251, 160, 27, 0.4);
+  box-shadow: 0 0 0 0.125rem rgba(251, 160, 27, 0.4);
 }
 
 button {
   width: 100%;
-  padding: 10px;
-  margin-top: 20px;
+  padding: 0.625rem;
+  margin-top: 1.25rem;
   font-size: 1rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 0.375rem;
   cursor: pointer;
   transition: background-color 0.2s;
 }
@@ -58,6 +66,7 @@ button {
   body {
     background-color: #f8fafc;
     color: #1f2937;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.08);
   }
 
   h2 {
@@ -97,10 +106,11 @@ button {
   body {
     background-color: #0f0f0f;
     color: #f1f5f9;
+    box-shadow: 0 0.25rem 0.75rem rgba(255, 255, 255, 0.08);
   }
 
   h2 {
-    color: white;
+    color: #ffffff;
   }
 
   label {
