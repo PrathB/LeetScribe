@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "LeetScribe",
   "version": "1.0.0",
-  "description": "Annotate LeetCode code with an LLM.",
+  "description": "Automatically annotate your LeetCode solutions with algorithm explanations using AI",
   "permissions": ["scripting", "activeTab", "storage"],
   "host_permissions": ["https://leetcode.com/*"],
   "background": {
