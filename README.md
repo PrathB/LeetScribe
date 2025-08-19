@@ -50,7 +50,7 @@ Perfect for reviewing your submissions later or sharing well-documented solution
 
 ### From Chrome Web Store
 
-_Coming soon - extension will be published to the Chrome Web Store_
+Checkout LeetScribe on Chrome Web Store: [LeetScribe](https://chromewebstore.google.com/detail/leetscribe/mpbgfemncgoplfccodhnpakmgfkffiof)
 
 ## ⚙️ Configuration
 
